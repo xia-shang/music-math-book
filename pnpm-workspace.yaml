@@ -1,0 +1,6 @@
+packages:
+  - '.'
+
+# pnpm 10+ 默认不再执行依赖的安装脚本，这里显式放行 esbuild（Vite 需要它的二进制）
+allowBuilds:
+  esbuild: true

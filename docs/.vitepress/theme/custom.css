@@ -1,0 +1,565 @@
+/**
+ * 理科生的乐理书 · 自定义主题
+ * 设计原则：纸面留白 + 终端配色。正文可读，公式可算。
+ */
+
+:root {
+  --vp-c-brand-1: #0d9488;
+  --vp-c-brand-2: #0f766e;
+  --vp-c-brand-3: #115e59;
+  --vp-c-brand-soft: rgba(13, 148, 136, 0.14);
+
+  --mm-ink: #0b1220;
+  --mm-grid: rgba(125, 211, 252, 0.08);
+  --mm-amber: #b45309;
+  --mm-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', ui-monospace, 'SFMono-Regular',
+    Consolas, monospace;
+}
+
+.dark {
+  --vp-c-brand-1: #2dd4bf;
+  --vp-c-brand-2: #5eead4;
+  --vp-c-brand-3: #99f6e4;
+  --vp-c-brand-soft: rgba(45, 212, 191, 0.14);
+
+  --mm-ink: #e2e8f0;
+  --mm-grid: rgba(45, 212, 191, 0.07);
+}
+
+/* ---------- 首页 ---------- */
+
+.VPHero .name {
+  font-family: var(--mm-mono);
+  letter-spacing: -0.02em;
+}
+
+.VPHero .tagline {
+  max-width: 36em;
+}
+
+.VPFeature {
+  border-radius: 10px;
+}
+
+.VPFeature .icon {
+  font-size: 22px;
+}
+
+.mm-slogan {
+  margin: 8px 0 0;
+  font-family: var(--mm-mono);
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+  opacity: 0.85;
+}
+
+.mm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  margin: 28px 0 8px;
+}
+
+.mm-grid a {
+  display: block;
+  padding: 16px 18px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+  text-decoration: none;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.mm-grid a:hover {
+  border-color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
+}
+
+.mm-grid .no {
+  font-family: var(--mm-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--vp-c-brand-1);
+}
+
+.mm-grid .title {
+  display: block;
+  margin: 6px 0 4px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.mm-grid .desc {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--vp-c-text-2);
+}
+
+/* 首页顶部的公式板 */
+.mm-banner {
+  margin: 34px 0 0;
+  padding: 18px 22px;
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-bg-soft);
+  border-radius: 0 10px 10px 0;
+  font-family: var(--mm-mono);
+  font-size: 13.5px;
+  line-height: 1.9;
+  color: var(--vp-c-text-2);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ---------- 正文 ---------- */
+
+.vp-doc h1 {
+  letter-spacing: -0.015em;
+}
+
+.vp-doc h2 {
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: 22px;
+  margin-top: 42px;
+}
+
+.vp-doc table {
+  display: table;
+  width: 100%;
+}
+
+.vp-doc th {
+  font-family: var(--mm-mono);
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--vp-c-text-2);
+}
+
+.vp-doc td,
+.vp-doc th {
+  padding: 8px 12px;
+}
+
+/* 数字与代码用等宽字体 */
+.vp-doc code {
+  font-family: var(--mm-mono);
+}
+
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 0;
+}
+
+.katex-display > .katex {
+  text-align: left;
+}
+
+/* ---------- 定义 / 定理 / 实验盒 ---------- */
+
+.mathbox {
+  margin: 22px 0;
+  border: 1px solid var(--vp-c-border);
+  border-left: 4px solid var(--vp-c-brand-1);
+  border-radius: 8px;
+  background: var(--vp-c-bg-soft);
+  overflow: hidden;
+}
+
+.mathbox__head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 9px 16px 0;
+}
+
+.mathbox__label {
+  font-family: var(--mm-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--vp-c-brand-1);
+}
+
+.mathbox__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.mathbox__body {
+  padding: 6px 16px 14px;
+}
+
+.mathbox__body > :first-child {
+  margin-top: 6px;
+}
+
+.mathbox__body > :last-child {
+  margin-bottom: 0;
+}
+
+.mathbox p {
+  line-height: 1.75;
+}
+
+.mathbox--definition { border-left-color: #2563eb; }
+.mathbox--definition .mathbox__label { color: #2563eb; }
+
+.mathbox--axiom { border-left-color: #7c3aed; }
+.mathbox--axiom .mathbox__label { color: #7c3aed; }
+
+.mathbox--theorem { border-left-color: #0d9488; }
+
+.mathbox--proof {
+  border-left-color: var(--vp-c-divider);
+  background: transparent;
+}
+.mathbox--proof .mathbox__label { color: var(--vp-c-text-3); }
+
+.mathbox--experiment { border-left-color: #b45309; }
+.mathbox--experiment .mathbox__label { color: #b45309; }
+
+.mathbox--algorithm { border-left-color: #0891b2; }
+.mathbox--algorithm .mathbox__label { color: #0891b2; }
+
+.mathbox--exercise { border-left-color: #64748b; }
+.mathbox--exercise .mathbox__label { color: #64748b; }
+
+.mathbox--pitfall { border-left-color: #dc2626; }
+.mathbox--pitfall .mathbox__label { color: #dc2626; }
+
+.dark .mathbox--definition { border-left-color: #60a5fa; }
+.dark .mathbox--definition .mathbox__label { color: #60a5fa; }
+.dark .mathbox--axiom { border-left-color: #a78bfa; }
+.dark .mathbox--axiom .mathbox__label { color: #a78bfa; }
+.dark .mathbox--experiment { border-left-color: #fbbf24; }
+.dark .mathbox--experiment .mathbox__label { color: #fbbf24; }
+.dark .mathbox--algorithm { border-left-color: #22d3ee; }
+.dark .mathbox--algorithm .mathbox__label { color: #22d3ee; }
+.dark .mathbox--pitfall { border-left-color: #f87171; }
+.dark .mathbox--pitfall .mathbox__label { color: #f87171; }
+
+/* ---------- 交互组件 ---------- */
+
+.explorer,
+.ruler {
+  margin: 26px 0;
+  padding: 18px 20px 10px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+}
+
+.explorer__controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px 20px;
+}
+
+.explorer__controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+}
+
+.explorer__controls label b {
+  color: var(--vp-c-text-1);
+  font-family: var(--mm-mono);
+  font-weight: 600;
+}
+
+.explorer__controls input[type='range'] {
+  accent-color: var(--vp-c-brand-1);
+  width: 100%;
+}
+
+.explorer__controls select {
+  padding: 6px 8px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 6px;
+  background: var(--vp-c-bg);
+  color: var(--vp-c-text-1);
+  font-size: 13px;
+}
+
+.explorer__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 8px;
+  margin: 18px 0 10px;
+}
+
+.stat {
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: var(--vp-c-bg);
+  border: 1px solid var(--vp-c-divider);
+}
+
+.stat--score {
+  border-color: var(--vp-c-brand-1);
+}
+
+.stat__k {
+  display: block;
+  font-family: var(--mm-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  color: var(--vp-c-text-3);
+}
+
+.stat__v {
+  font-family: var(--mm-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.explorer__meter {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--vp-c-divider);
+  overflow: hidden;
+  margin: 8px 0 14px;
+}
+
+.explorer__meter-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--vp-c-brand-2), var(--vp-c-brand-1));
+  transition: width 0.15s ease;
+}
+
+.explorer__plot,
+.ruler svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.explorer__plot .axis {
+  stroke: var(--vp-c-text-3);
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+.explorer__plot .tick {
+  stroke: var(--vp-c-text-3);
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.explorer__plot .tick-label,
+.explorer__plot .axis-label {
+  fill: var(--vp-c-text-3);
+  font-size: 9.5px;
+  font-family: var(--mm-mono);
+}
+
+.explorer__plot .curve {
+  fill: none;
+  stroke: var(--vp-c-brand-1);
+  stroke-width: 2;
+}
+
+.explorer__plot .marker {
+  stroke: #f59e0b;
+  stroke-width: 1.5;
+  stroke-dasharray: 3 3;
+  opacity: 0.85;
+}
+
+.explorer__plot .dot {
+  fill: #f59e0b;
+}
+
+.explorer__hint,
+.ruler__hint {
+  margin: 12px 0 4px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--vp-c-text-2);
+}
+
+.ruler-line {
+  stroke: var(--vp-c-divider);
+  stroke-width: 1.5;
+}
+
+.ruler-tick {
+  stroke: var(--vp-c-text-3);
+  stroke-width: 1;
+  opacity: 0.6;
+}
+
+.ruler-name {
+  font-size: 10.5px;
+  font-family: var(--mm-mono);
+  fill: var(--vp-c-text-2);
+}
+
+.ruler-note {
+  font-size: 9px;
+  fill: var(--vp-c-text-3);
+}
+
+.ruler-deg {
+  font-size: 10px;
+  font-family: var(--mm-mono);
+  fill: var(--vp-c-text-2);
+  cursor: default;
+}
+
+.ruler-deg.is-hover {
+  fill: var(--vp-c-brand-1);
+  font-weight: 700;
+}
+
+.ruler-dev {
+  font-size: 9px;
+  font-family: var(--mm-mono);
+  fill: #b45309;
+}
+
+.dark .ruler-dev {
+  fill: #fbbf24;
+}
+
+/* ---------- 章末导航 ---------- */
+
+.vp-doc .lead {
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: var(--vp-c-text-2);
+}
+
+.vp-doc .chapter-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0 26px;
+}
+
+.vp-doc .chapter-meta span {
+  padding: 3px 10px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 999px;
+  font-family: var(--mm-mono);
+  font-size: 11.5px;
+  color: var(--vp-c-text-3);
+}
+
+/* ---------- 代码块 ---------- */
+
+.vp-doc div[class*='language-'] {
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider);
+}
+
+/* ---------- 插图与音频 ---------- */
+
+.mm-figure {
+  margin: 26px 0;
+  text-align: center;
+}
+
+.mm-figure img {
+  display: block;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 10px;
+  background: #fbfcfe;
+}
+
+.mm-figure figcaption {
+  margin-top: 10px;
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--vp-c-text-3);
+}
+
+.audio-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.audio-demo {
+  padding: 12px 14px 10px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 10px;
+  background: var(--vp-c-bg-soft);
+}
+
+.audio-demo__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.audio-demo__badge {
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  font-family: var(--mm-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.audio-demo__title {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+.audio-demo audio {
+  width: 100%;
+  height: 34px;
+  display: block;
+}
+
+.audio-demo__hint {
+  margin: 8px 0 0;
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--vp-c-text-3);
+}
+
+/* ---------- 移动端 ---------- */
+
+@media (max-width: 640px) {
+  .explorer,
+  .ruler {
+    padding: 14px 12px 6px;
+  }
+
+  .explorer__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mm-banner {
+    font-size: 11.5px;
+  }
+}
+
+/* ---------- 打印 ---------- */
+
+@media print {
+  .explorer,
+  .ruler {
+    break-inside: avoid;
+  }
+
+  .mathbox {
+    break-inside: avoid;
+  }
+}

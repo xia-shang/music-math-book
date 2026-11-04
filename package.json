@@ -1,0 +1,17 @@
+{
+  "name": "music-math-book",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "《音乐的数理逻辑：从振动到结构的公理化乐理》—— 程序员版",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs",
+    "check": "node scripts/check.mjs"
+  },
+  "devDependencies": {
+    "markdown-it-mathjax3": "^4.3.2",
+    "vitepress": "^1.6.4"
+  }
+}

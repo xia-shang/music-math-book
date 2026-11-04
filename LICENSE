@@ -1,0 +1,49 @@
+# 许可协议
+
+本项目采用**双许可**：
+
+## 正文与插图 —— CC BY-NC-SA 4.0
+
+《音乐的数理逻辑：从振动到结构的公理化乐理》的**文字内容、示意图、交互演示设计**采用
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh)
+（知识共享 署名-非商业性使用-相同方式共享 4.0 国际）协议。
+
+你可以自由地：
+
+- **共享** —— 以任何媒介或格式复制、分发本项目内容；
+- **演绎** —— 修改、转换或以本项目为基础进行创作。
+
+但必须遵守以下条件：
+
+- **署名** —— 保留原作者署名与本书链接，并说明是否作了修改；
+- **非商业性使用** —— 不得将本项目内容用于商业目的；
+- **相同方式共享** —— 若你修改、转换或以本项目为基础创作，必须以相同协议分发你的作品。
+
+完整法律文本：<https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode.zh-Hans>
+
+## 代码 —— MIT
+
+`code/` 目录下的 Python 脚本、`docs/.vitepress/` 下的配置与 Vue 组件，采用
+[MIT License](https://opensource.org/licenses/MIT)：
+
+```
+Copyright (c) 2026 《理科生的乐理书》 contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
