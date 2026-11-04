@@ -4,9 +4,12 @@
 >
 > 不背五线谱，先写微分方程。用物理、数学和代码把「听起来对」变成「算得出来」。
 
+[![Deploy](https://github.com/xia-shang/music-math-book/actions/workflows/deploy.yml/badge.svg)](https://github.com/xia-shang/music-math-book/actions/workflows/deploy.yml)
 ![VitePress](https://img.shields.io/badge/VitePress-1.6-646cff)
 ![Python](https://img.shields.io/badge/Python-3.12-3776ab)
 ![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey)
+
+**在线阅读：<https://xia-shang.github.io/music-math-book/>**
 
 ## 这是什么
 
