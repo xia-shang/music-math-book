@@ -54,7 +54,7 @@ def table_notes() -> None:
         print(pad(note_name(semis), 8)
               + pad(f"{f:.3f}", 14, "right")
               + pad(f"{100.0 * semis:.1f}", 20, "right"))
-    print("\n注意首尾两行：A3 与 A5 都叫 A，坐标恰好相差 1200 cent。")
+    print("\n注意首尾两行：A3 与 A5 都叫 A，坐标恰好相差 2400 cent（两个八度）。")
 
 
 def table_log_ear() -> None:
@@ -111,7 +111,7 @@ def table_ratios() -> None:
     print(f"\n  12 个纯五度 = {twelve_fifths:9.3f} cent")
     print(f"  7 个纯八度  = {seven_octaves:9.3f} cent")
     print(f"  差值（毕达哥拉斯音差）= {twelve_fifths - seven_octaves:6.3f} cent")
-    print("\n五度圈走 12 步回不到原点：第 4 章要解决的就是这 23.4 cent。")
+    print("\n纯五度链走 12 步回不到原点：第 4 章要解决的就是这 23.4 cent；12-TET 的五度圈则闭合。")
 
 
 def main() -> None:

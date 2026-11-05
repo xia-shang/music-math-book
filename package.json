@@ -1,6 +1,6 @@
 {
   "name": "music-math-book",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "《音乐的数理逻辑：从振动到结构的公理化乐理》—— 程序员版",

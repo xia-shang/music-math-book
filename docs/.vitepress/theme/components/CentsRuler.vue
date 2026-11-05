@@ -1,26 +1,28 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useI18n } from '../i18n'
 
+const { t } = useI18n()
 const DEGREES = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
 
 // 7 个自然音级在三种律制下的绝对音高（cents，以 C 为 0）
-const TUNINGS = [
+const TUNINGS = computed(() => [
   {
-    name: '十二平均律 12-TET',
-    note: '100n —— 全世界的默认值',
+    name: t('十二平均律 12-TET', '12-TET'),
+    note: t('100n —— 全世界的默认值', '100n — the global default'),
     values: [0, 200, 400, 500, 700, 900, 1100]
   },
   {
-    name: '纯律 Just Intonation',
-    note: '5 限整数比：5/4、6/5、8/5 …',
+    name: t('纯律 Just Intonation', 'Just intonation'),
+    note: t('5 限整数比：5/4、6/5、8/5 …', '5-limit: 5/4, 6/5, 8/5 …'),
     values: [0, 203.91, 386.314, 498.858, 701.955, 884.359, 1088.269]
   },
   {
-    name: '五度相生律 Pythagorean',
-    note: '只由 3/2 堆叠生成',
+    name: t('五度相生律 Pythagorean', 'Pythagorean'),
+    note: t('只由 3/2 堆叠生成', 'stacking only 3/2'),
     values: [0, 203.91, 407.82, 498.858, 701.955, 905.865, 1109.775]
   }
-]
+])
 
 const hover = ref<string | null>(null)
 
@@ -29,14 +31,14 @@ const ROW_H = 62
 const PAD_L = 78
 const PAD_R = 34
 
-const H = computed(() => TUNINGS.length * ROW_H + 34)
+const H = computed(() => TUNINGS.value.length * ROW_H + 34)
 
 function x(c: number): number {
   return PAD_L + (c / 1200) * (W - PAD_L - PAD_R)
 }
 
-function dev(t: (typeof TUNINGS)[number], i: number): number {
-  return t.values[i] - 100 * i
+function dev(tuning: { values: number[] }, i: number): number {
+  return tuning.values[i] - 100 * i
 }
 
 function fmt(d: number): string {
@@ -47,8 +49,8 @@ function fmt(d: number): string {
 
 <template>
   <div class="ruler">
-    <svg :viewBox="`0 0 ${W} ${H}`" role="img" aria-label="三种律制的音高位置对比">
-      <g v-for="(t, ti) in TUNINGS" :key="t.name">
+    <svg :viewBox="`0 0 ${W} ${H}`" role="img" :aria-label="t('三种律制的音高位置对比', 'Pitch positions in three tuning systems')">
+      <g v-for="(tuning, ti) in TUNINGS" :key="tuning.name">
         <line
           :x1="PAD_L"
           :y1="ti * ROW_H + 30"
@@ -56,9 +58,9 @@ function fmt(d: number): string {
           :y2="ti * ROW_H + 30"
           class="ruler-line"
         />
-        <text :x="8" :y="ti * ROW_H + 26" class="ruler-name">{{ t.name }}</text>
-        <text :x="8" :y="ti * ROW_H + 41" class="ruler-note">{{ t.note }}</text>
-        <g v-for="(v, i) in t.values" :key="DEGREES[i]">
+        <text :x="8" :y="ti * ROW_H + 26" class="ruler-name">{{ tuning.name }}</text>
+        <text :x="8" :y="ti * ROW_H + 41" class="ruler-note">{{ tuning.note }}</text>
+        <g v-for="(v, i) in tuning.values" :key="DEGREES[i]">
           <line :x1="x(v)" :y1="ti * ROW_H + 26" :x2="x(v)" :y2="ti * ROW_H + 34" class="ruler-tick" />
           <text
             :x="x(v)"
@@ -70,21 +72,20 @@ function fmt(d: number): string {
             {{ DEGREES[i] }}
           </text>
           <text
-            v-if="Math.abs(dev(t, i)) >= 2"
+            v-if="Math.abs(dev(tuning, i)) >= 2"
             :x="x(v)"
             :y="ti * ROW_H + 14"
             text-anchor="middle"
             class="ruler-dev"
           >
-            {{ fmt(dev(t, i)) }}
+            {{ fmt(dev(tuning, i)) }}
           </text>
         </g>
       </g>
     </svg>
     <p class="ruler__hint">
-      纵向对齐的是同一个音名。数字表示该律制相对十二平均律的偏差（cents）。
-      纯律把大三度压低了 13.7 cents（386.3 → 400），五度相生律则把大三度抬高了 7.8 cents ——
-      这两条曲线在第 4 章会正式求交。
+      {{ t('纵向对齐的是同一个音名。数字表示该律制相对十二平均律的偏差（cents）。纯律把大三度压低了 13.7 cents（386.3 → 400），五度相生律则把大三度抬高了 7.8 cents —— 这两条曲线在第 4 章会正式求交。',
+        'Notes aligned vertically share the same name. Numbers are deviations from 12-TET in cents. Just intonation lowers the major third by 13.7 cents (386.3 vs. 400), while Pythagorean tuning raises it by 7.8 cents. Chapter 4 compares the two curves directly.') }}
     </p>
   </div>
 </template>

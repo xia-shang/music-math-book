@@ -4,28 +4,31 @@
 
 ## 一句话目标
 
-把《音乐的数理逻辑》写成一个可以部署在 GitHub Pages 上的 VitePress 网页书：10 章正文、5 个附录、10 个可运行的 Python 脚本，风格统一、数学自洽、数字可验证。
+把《音乐的数理逻辑》写成一个可以部署在 GitHub Pages 上的中英双语 VitePress 网页书：10 章正文、5 个附录、10 个可运行的 Python 脚本，风格统一、数学自洽、数字可验证；中文在 `docs/`，英文在 `docs/en/`。
 
 ## 仓库结构
 
 ```
-docs/                     # 站点根目录（VitePress srcDir）
+docs/                     # 中文站（VitePress srcDir）
   index.md                # 首页（已完成，勿动）
   about.md                # 关于（已完成）
+  releases.md             # 版本与更新日志
   guide/                  # 导读三页（已完成）
-  chapters/               # 第 0~9 章（00 与 03 已完成；03 是风格基准）
-  appendix/               # 附录 A~E（均为占位页，待写）
-  .vitepress/config.mts   # 站点配置（导航/侧边栏/数学开关，尽量勿动）
-  .vitepress/theme/       # 自定义主题与组件（勿动，除非修 bug）
+  chapters/               # 第 0~9 章（03 是风格基准）
+  appendix/               # 附录 A~E
+  en/                     # 英文站：相同目录结构（index/about/releases/guide/chapters/appendix）
+  .vitepress/config.mts   # 双语配置（locale、nav、sidebar、搜索、版本号）
+  .vitepress/theme/       # 自定义主题与组件（i18n.ts 提供中英文案）
   public/logo.svg
   public/figures/         # 脚本生成的 SVG 插图（勿手改）
   public/audio/           # 脚本生成的 WAV 对照音频（勿手改）
 code/                     # Python 实验脚本（common.py 已完成）
   common.py               # 公共函数（音高、临界带宽、粗糙度、律制）
   ch03_consonance.py      # 已完成，可作脚本风格基准
-  ch0X_*.py               # 待写
+  ch0X_*.py               # 章节实验
   make_figures.py         # 生成 docs/public/figures/*.svg
   make_audio.py           # 生成 docs/public/audio/*.wav
+TRANSLATION.md            # 英文版翻译规范与术语表
 PLAN.md                   # 全书内容规格（写作合同）
 PROGRESS.md               # 任务清单与进度（每完成一项就打勾）
 ```
@@ -122,10 +125,13 @@ description: "一句话描述（30 字内）"
 | 标签 | 用途 | 注意 |
 | --- | --- | --- |
 | `<Box kind="..." title="...">` | 各种盒子 | kind 只能取：definition / axiom / theorem / proof / experiment / exercise / algorithm / pitfall / checkpoint / note；盒子内部可以放公式、列表、代码块 |
-| `<ConsonanceExplorer />` | 粗糙度交互演示 | 只在第 3 章（已用）或第 4 章引用；不要再改组件本身 |
+| `<ConsonanceExplorer />` | 粗糙度交互演示 + Web Audio 试听 | 第 3 章；不要在组件外重复实现同一套模型 |
 | `<CentsRuler />` | 三种律制偏差对比 | 用在第 4 章 |
+| `<EuclideanRhythmLab />` | 欧几里得节奏可视化 + 节拍试听 | 第 7 章；k、n、BPM 联动，不依赖 WAV |
 | `<Figure src="/figures/…" caption="…" />` | 脚本生成的 SVG 插图 | 先跑 `make_figures.py`；caption 写清「图在说明什么」，不要只写「如图」 |
 | `<AudioDemo src="/audio/…" title="…" hint="…" />` | 试听卡片 | 先跑 `make_audio.py`；hint 说明「该听哪个差异」；成对出现时用 `<div class="audio-row">` 包一层 |
+
+组件的界面文案通过 `docs/.vitepress/theme/i18n.ts` 按 VitePress locale 自动切换；新增组件必须同时提供中英文案（`t('中文','English')`）。
 
 VitePress 内置容器：`::: tip` / `::: warning` / `::: danger` / `::: info` 可用。不要自己发明 `::: theorem`。
 

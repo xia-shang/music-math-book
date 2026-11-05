@@ -203,11 +203,15 @@ def table_entropy(C, P) -> None:
     print("  " + pad("冗余度 1 − H1/Hmax", 24) + f"= {1.0 - H1 / math.log2(K):.4f}")
     print("  " + pad("冗余度 1 − H(X)/Hmax", 24) + f"= {1.0 - entropy(MARG_P) / math.log2(K):.4f}")
     nonzero = sum(1 for a in range(K) for b in range(K) if C[a][b] > 0)
-    mm1 = H1 + (nonzero - 1) / (2 * (N - 1) * math.log(2))
+    nonempty_rows = sum(1 for a in range(K) if sum(C[a]) > 0)
+    # 条件分布按前驱分组。各行的 Miller–Madow 修正加权相加后，
+    # 增量是 (非零联合格数 − 非空行数) / (2N ln 2)，而不是 (m−1)/(2N ln 2)。
+    mm1 = H1 + (nonzero - nonempty_rows) / (2 * (N - 1) * math.log(2))
     mm0 = entropy(MARG_P) + (K - 1) / (2 * N * math.log(2))
     print("\n  直接代入频率的估计有系统性低估（样本少时尤其明显），")
-    print("  Miller–Madow 修正 H + (m−1)/(2N ln 2)：")
-    print(f"    H1 修正后 = {mm1:.4f} bit（m = {nonzero} 个非零格）")
+    print("  边际熵的 Miller–Madow 修正为 H + (K−1)/(2N ln 2)；")
+    print("  条件熵按前驱分组修正，加权后的增量为 (非零联合格数 − 非空行数)/(2N ln 2)：")
+    print(f"    H1 修正后 = {mm1:.4f} bit（{nonzero} 个非零格，{nonempty_rows} 个非空行）")
     print(f"    H(X) 修正后 = {mm0:.4f} bit（m = {K} 个非零格）")
     print(f"  一阶链把熵从边际的 {entropy(MARG_P):.4f} bit 压低到 {H1:.4f} bit："
           "差额就是「语境带来的可预测性」。")

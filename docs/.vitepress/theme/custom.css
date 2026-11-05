@@ -110,6 +110,18 @@
   white-space: pre;
 }
 
+.mm-version {
+  margin: 18px 0 0;
+  font-family: var(--mm-mono);
+  font-size: 12px;
+  color: var(--vp-c-text-3);
+}
+
+.mm-version a {
+  color: var(--vp-c-brand-1);
+  text-decoration: none;
+}
+
 /* ---------- 正文 ---------- */
 
 .vp-doc h1 {
@@ -153,6 +165,28 @@
 
 .katex-display > .katex {
   text-align: left;
+}
+
+/* MathJax 的公式在窄屏上可能超过容器宽度，允许横向滚动而不是被裁掉 */
+.vp-doc mjx-container {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: inline-block;
+}
+
+.vp-doc mjx-container[display='true'] {
+  display: block;
+  padding-bottom: 2px;
+}
+
+/* MathJax 的无障碍 MathML 副本被视觉隐藏；限制其盒宽，避免长公式把页面撑宽 */
+mjx-assistive-mml {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
 }
 
 /* ---------- 定义 / 定理 / 实验盒 ---------- */
@@ -317,6 +351,64 @@
   font-size: 14px;
   font-weight: 600;
   color: var(--vp-c-text-1);
+}
+
+.explorer__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 14px 0 2px;
+}
+
+.explorer__play {
+  padding: 7px 14px;
+  border: 1px solid var(--vp-c-brand-1);
+  border-radius: 999px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  font-family: var(--mm-mono);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.explorer__play:hover {
+  background: var(--vp-c-brand-1);
+  color: var(--vp-c-bg);
+}
+
+.explorer__note {
+  font-family: var(--mm-mono);
+  font-size: 11px;
+  color: var(--vp-c-text-3);
+}
+
+.explorer__comb {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: 6px;
+}
+
+.explorer__comb .comb-dot--a {
+  fill: var(--vp-c-brand-1);
+}
+
+.explorer__comb .comb-dot--b {
+  fill: #f59e0b;
+}
+
+.explorer__comb .axis {
+  stroke: var(--vp-c-text-3);
+  stroke-width: 1;
+  opacity: 0.45;
+}
+
+.explorer__comb .tick-label {
+  fill: var(--vp-c-text-3);
+  font-size: 10px;
+  font-family: var(--mm-mono);
 }
 
 .explorer__meter {
@@ -534,6 +626,180 @@
   color: var(--vp-c-text-3);
 }
 
+/* 长实验输出默认折叠：先看结论，需要复核时再展开 */
+.mathbox details {
+  margin: 10px 0 4px;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 7px;
+  background: var(--vp-c-bg);
+}
+
+.mathbox details summary {
+  padding: 8px 12px;
+  color: var(--vp-c-brand-1);
+  font-family: var(--mm-mono);
+  font-size: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.mathbox details[open] summary {
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.mathbox details div[class*='language-'] {
+  margin: 10px 12px 12px;
+}
+
+/* ---------- 节奏实验 ---------- */
+
+.rhythm-lab {
+  margin: 26px 0;
+  padding: 18px 20px 14px;
+  border: 1px solid var(--vp-c-border);
+  border-radius: 12px;
+  background: var(--vp-c-bg-soft);
+}
+
+.rhythm-lab__controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px 18px;
+  align-items: end;
+}
+
+.rhythm-lab__controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+}
+
+.rhythm-lab__controls label b {
+  color: var(--vp-c-text-1);
+  font-family: var(--mm-mono);
+}
+
+.rhythm-lab__controls input[type='range'] {
+  accent-color: var(--vp-c-brand-1);
+  width: 100%;
+}
+
+.rhythm-lab__play {
+  height: 34px;
+  padding: 0 14px;
+  border: 1px solid var(--vp-c-brand-1);
+  border-radius: 999px;
+  background: var(--vp-c-brand-soft);
+  color: var(--vp-c-brand-1);
+  font-family: var(--mm-mono);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.rhythm-lab__play:hover {
+  background: var(--vp-c-brand-1);
+  color: var(--vp-c-bg);
+}
+
+.rhythm-lab__body {
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.rhythm-lab__body > * {
+  min-width: 0;
+}
+
+.rhythm-lab__body svg {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+}
+
+.rhythm-lab__dot {
+  fill: var(--vp-c-bg);
+  stroke: var(--vp-c-brand-1);
+  stroke-width: 1;
+}
+
+.rhythm-lab__dot.is-hit {
+  fill: var(--vp-c-brand-1);
+  stroke-width: 1.5;
+}
+
+.rhythm-lab__dot.is-active {
+  fill: #f59e0b;
+}
+
+.rhythm-lab__num {
+  fill: var(--vp-c-text-3);
+  font-family: var(--mm-mono);
+  font-size: 9px;
+  pointer-events: none;
+}
+
+.rhythm-lab__num.is-hit {
+  fill: #ffffff;
+}
+
+.rhythm-lab__center {
+  fill: var(--vp-c-text-1);
+  font-family: var(--mm-mono);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.rhythm-lab__pattern {
+  fill: var(--vp-c-brand-1);
+  font-family: var(--mm-mono);
+  font-size: 11px;
+}
+
+.rhythm-lab__info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+}
+
+.rhythm-lab__info p {
+  margin: 4px 0 0;
+  line-height: 1.75;
+}
+
+.rhythm-lab__stat {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px dashed var(--vp-c-divider);
+}
+
+.rhythm-lab__stat span {
+  min-width: 72px;
+  color: var(--vp-c-text-3);
+  font-size: 12px;
+}
+
+.rhythm-lab__stat b {
+  color: var(--vp-c-text-1);
+  font-family: var(--mm-mono);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .rhythm-lab__body {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- 移动端 ---------- */
 
 @media (max-width: 640px) {
@@ -548,6 +814,18 @@
 
   .mm-banner {
     font-size: 11.5px;
+  }
+
+  /* 宽表格在手机上改为横向滚动，而不是把整页撑宽 */
+  .vp-doc table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+  }
+
+  .vp-doc th,
+  .vp-doc td {
+    white-space: nowrap;
   }
 }
 

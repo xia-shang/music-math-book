@@ -6,7 +6,7 @@ ch01_vibration.py —— 第 1 章配套实验：简谐振动、傅里叶级数�
 
 输出：
     表 1  方波的前 6 个非零傅里叶系数（奇次谐波，按 1/n 衰减）
-    表 2  用 N 项部分和逼近方波的 RMS 误差与最大过冲
+    表 2  用 N 项部分和逼近方波的 RMS 误差与部分和峰值（吉布斯过冲）
     图 1  一个周期内「理想方波 vs N=5 部分和」的 ASCII 对比
     表 3  方波、锯齿波、三角波的谐波结构
     表 4  周期信号与白噪声的自相关：周期性的数值判据
@@ -70,20 +70,20 @@ def square_partial(t: float, n_max: int) -> float:
 def table_square_coeffs() -> None:
     print("表 1：方波的前 6 个非零傅里叶系数（n 为奇数）\n")
     print(pad("n", 6, "right") + pad("系数 c_n", 14, "right")
-          + pad("相对基频", 14, "right"))
+          + pad("相对基波振幅", 14, "right"))
     print("-" * 34)
     c1 = square_coeff(1)
     for n in (1, 3, 5, 7, 9, 11):
         c = square_coeff(n)
         print(pad(str(n), 6, "right") + pad(f"{c:.6f}", 14, "right")
-              + pad(f"{c / c1:.3f}", 14, "right"))
-    print("\n只出现奇次谐波；系数按 1/n 衰减，第 11 次谐波只剩基频的 9.1%。")
+              + pad(f"{c / c1:.3f}", 14, "right"))  # c/c1 是振幅比，不是频率比
+    print("\n只出现奇次谐波；系数按 1/n 衰减，第 11 次谐波只剩基波振幅的 9.1%。")
 
 
 def table_synthesis() -> None:
     print("\n表 2：用部分和逼近方波（4096 个采样点，t 覆盖两个周期）\n")
     print(pad("最高谐波 N", 14) + pad("非零项数", 12, "right")
-          + pad("RMS 误差", 14, "right") + pad("最大过冲", 12, "right"))
+          + pad("RMS 误差", 14, "right") + pad("部分和峰值", 12, "right"))
     print("-" * 52)
     samples = 4096
     for n_max in (1, 3, 5, 7, 9, 11):
@@ -99,8 +99,8 @@ def table_synthesis() -> None:
         terms = (n_max + 1) // 2
         print(pad(str(n_max), 14) + pad(str(terms), 12, "right")
               + pad(f"{rms:.4f}", 14, "right") + pad(f"{peak:.4f}", 12, "right"))
-    print("\n项数越多，RMS 误差越小；但最大过冲稳定在 1.18 附近 ——")
-    print("这就是吉布斯现象：方波有无限带宽，任何有限项和都消不掉尖角。")
+    print("\n项数越多，RMS 误差越小；但部分和峰值仍比理想振幅 1 高约 18%，")
+    print("也就是过冲约 0.18 并不消失。这就是吉布斯现象：有限项和消不掉间断点附近的过冲。")
 
 
 def plot_waveform(width: int = 56, height: int = 17) -> None:
@@ -167,8 +167,8 @@ def table_autocorr() -> None:
     print("\n  白噪声（512 个采样点，随机种子 7）：")
     print(f"    r(0)   = {autocorr(noise, 0):+.3f}"
           f"    r(128) = {autocorr(noise, 128):+.3f}")
-    print("\n判据：r(T) ≈ 1 且在每个整数周期处重复，才是周期信号；")
-    print("白噪声只在 lag = 0 处相关，其他滞后接近 0。")
+    print("\n理想周期信号在整数周期处应有 r(T) ≈ 1；这是重要线索，不是单独成立的充分判据。")
+    print("实际判断还要结合多个滞后、信号长度与噪声；白噪声只在 lag = 0 处强相关，其他滞后接近 0。")
 
 
 def main() -> None:

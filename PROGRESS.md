@@ -3,7 +3,7 @@
 > 规则：**从上往下做第一个 ⬜ 的任务**；完成后改成 ✅ 并写明完成时间与备注；
 > 开始一个任务时改成 🔄。任何 agent 接手时先读这里。
 
-**当前状态**：全书完成（T0~T15），并补齐了插图与试听资产；构建通过，可部署。
+**当前状态**：中英双语全书完成（T0~T19），版本 v1.1.0；构建通过，已发布到 GitHub Pages。
 
 ## 任务列表
 
@@ -25,6 +25,10 @@
 | T13 | 最终验收：全站构建 + 逐章校对 + 首页链接检查 | 无代码改动 | ✅ 2026-11-03 | 第 3 章 3.2.2 的 CB 表按 `common.critical_band` 实算改为 119.1 / 127.2 / 134.5 / 159.3 / 209.0 / 279.6，3.2.3 的 cent 换算改为对数定义 462 ¢（并说明 529 ¢ 来自线性近似、100 Hz 处会差 10 个半音），3.3.4 谷底位置改为脚本实跑值 384.0 / 500.0 / 702.0 / 886.0 / 970.0；ch00~ch09 十个脚本全部 exit=0，九个 raw-text 实验 Box 与输出逐行 MATCH，第 3 章表与谷底数值核对一致；459 个站内链接/锚点全部可达，全站无「占位页」；10 章 + 5 附录均 ≥2000 汉字（最小附录 B 2208，第 3 章 3122），渲染后每页 mjx > 0、非代码区字面 `$` 与 ``` 均为 0。顺带修复：`kind="tip"` / `kind="warning"` 三个非法 Box 改为 `note` / `pitfall`，guide 首页去除 numpy/plots/KaTeX 失实描述与失效 URL，about 的 KaTeX→MathJax，roadmap 的 `roughness.py`→`common.py`，附录 D 三个 DOI 与卷期页（Sethares、Toussaint、Callender 等）按 Crossref 元数据改正；最终构建 39.41s、EXIT=0 |
 | T14 | 第 1、2、4、5、7、9 章插图（7 张 SVG）+ `code/make_figures.py` | `docs/public/figures/*.svg`、6 个章节文件 | ✅ 2026-11-03 | 脚本纯标准库生成：harmonics（方波时域+频谱）、timbre（两种谐波包络）、spiral（音高螺旋）、tuning-n（加权 RMS 随 n，口径与 4.4 表一致：12-TET 13.1¢ / 53-TET 1.5¢）、euclidean（E(3,8)/E(5,8)/E(5,13)，与定义 7.1 一致）、circle-of-fifths、major-scale；XML 与画布边界校验全部通过；页面用 `<Figure>` 组件，`BASE_PATH=/music-math-book/` 构建下 src 均正确加前缀 |
 | T15 | 第 1、3、6 章试听（8 个 WAV）+ `code/make_audio.py` + `AudioDemo`/`Figure` 组件 | `docs/public/audio/*.wav`、3 个章节文件、theme 组件 | ✅ 2026-11-03 | 22050 Hz / 16 bit / 单声道 / 1.8 s，6 谐波；纯律 vs 12-TET 的五度、大三度、大三和弦，外加 440 Hz 乐音 vs 白噪声；合计 620 KB；`withBase()` 保证子路径部署可用；构建 83.53s、EXIT=0 |
+| T16 | 全书事实与表述审校 | 10 章 + 5 附录 | ✅ 2026-11-05 | 修正：固定 Hz 差下粗糙度随音高非单调（补 W′(x) 推导与反例）、D 的「精确为0」改为显示精度、增三和弦音程构成、Perron–Frobenius 极限与正矩阵条件、有限离散点集不得称为 S¹/T²、马尔可夫链平稳分布不是「单一吸引子」、Miller–Madow 条件熵口径（1.4776→1.3855）、纯律/狼五度/22 shruti 等表述；习题、术语表、附录同步。10 个脚本全部 exit=0，实验输出与正文逐行一致；构建通过 |
+| T17 | demo、图表、音频升级 | 3 个交互组件、11 张 SVG、21 段 WAV | ✅ 2026-11-05 | `ConsonanceExplorer` 增加 Web Audio 试听、前 8 阶重合统计与谐波梳；新增 `EuclideanRhythmLab`（k/n/BPM 可视化 + 节拍试听）；新增粗糙度曲线、谐波梳、节奏时间线、转移热图 4 张图；音频扩到 21 段（音程/和弦/终止式/音阶/音色/节奏/马尔可夫旋律），共约 2.5 MB；headless Edge 实点两个 demo，0 runtime error |
+| T18 | 阅读体验与窄屏修复 | 9 章输出折叠 + 主题 CSS | ✅ 2026-11-05 | 把 9 章 71~194 行的实验输出折叠为 `::: details`，保留命令行与结论；新增 `text:no-line-numbers` 与 details 样式；修复手机端 MathJax 长公式被裁切、宽表格撑破页面、节奏实验网格溢出；390px 视口下 docWidth ≤ 390，图片全部加载，详情可展开 |
+| T19 | 版本号 + 英文版 + 中英切换 | `docs/en/**`、双语 config、`releases.md`、`i18n.ts` | ✅ 2026-11-05 | 站点版本设为 **v1.1.0**（导航/页脚/更新日志/package.json）；新增英文版 21 页（10 章 + 5 附录 + 导读 3 页 + 首页/关于/版本），语言切换双向可达；Box/CentsRuler/ConsonanceExplorer/EuclideanRhythmLab 组件文案随 locale 切换；英文页 390px 下无横向溢出；双语构建 `build complete in 102.07s`、EXIT=0 |
 
 ## 已锁定的文件（不要重写）
 

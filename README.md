@@ -5,11 +5,23 @@
 > 不背五线谱，先写微分方程。用物理、数学和代码把「听起来对」变成「算得出来」。
 
 [![Deploy](https://github.com/xia-shang/music-math-book/actions/workflows/deploy.yml/badge.svg)](https://github.com/xia-shang/music-math-book/actions/workflows/deploy.yml)
+![Version](https://img.shields.io/badge/version-1.1.0-0f766e)
+![Languages](https://img.shields.io/badge/languages-中文%20%7C%20English-blue)
 ![VitePress](https://img.shields.io/badge/VitePress-1.6-646cff)
 ![Python](https://img.shields.io/badge/Python-3.12-3776ab)
 ![License](https://img.shields.io/badge/license-CC%20BY--NC--SA%204.0-lightgrey)
 
 **在线阅读：<https://xia-shang.github.io/music-math-book/>**
+**English edition: <https://xia-shang.github.io/music-math-book/en/>**
+
+> v1.1.0 新增英文版（中文/English 可切换）、版本页、21 段程序生成音频与 4 张新图。更新日志见 [`docs/releases.md`](docs/releases.md)。
+
+## 中英双语
+
+- 中文版：<https://xia-shang.github.io/music-math-book/>
+- English edition：<https://xia-shang.github.io/music-math-book/en/>
+
+页面右上角的语言菜单可以在「简体中文 / English」之间切换；版本号在导航栏 `v1.1.0` 与页脚，详见 [`docs/releases.md`](docs/releases.md)。
 
 ## 这是什么
 
@@ -18,8 +30,8 @@
 - 每个概念都从可测量的量出发：频率、周期、振幅、频谱；
 - 每条结论都写成定义、公设与定理，可以顺着推、也可以顺着查；
 - 每章配一个可运行的 Python 脚本，书里的数字你都能自己重算一遍；
-- 关键概念有可交互组件（协和度曲线、律制偏差尺），不用靠想象；
-- 关键图表是脚本生成的 SVG；纯律 vs 12-TET 的五度、三度、三和弦，还配了可试听的 WAV 对照。
+- 关键概念有可交互组件（协和度曲线、律制偏差尺、欧几里得节奏实验），不用靠想象；
+- 关键图表是脚本生成的 SVG；音程、音阶、终止式、节奏与马尔可夫旋律都配了 21 段可试听的 WAV 对照。
 
 ## 目录
 
@@ -87,16 +99,19 @@ python code/ch05_scale_search.py
 ## 项目结构
 
 ```
-docs/                       # VitePress 站点
-  .vitepress/config.mts     # 导航、侧边栏、MathJax、搜索
-  .vitepress/theme/         # 自定义主题 + 交互组件（Vue 3）
-  chapters/                 # 10 章正文
-  appendix/                 # 5 个附录
-  guide/                    # 导读、符号表、路线图
-  index.md                  # 首页
+docs/                       # VitePress 站点（中文根路径 /）
+  .vitepress/config.mts     # 双语 locale、导航、侧边栏、MathJax、搜索、版本号
+  .vitepress/theme/         # 自定义主题 + 交互组件 + i18n 文案
+  chapters/                 # 中文版 10 章正文
+  appendix/                 # 中文版 5 个附录
+  guide/                    # 中文版导读、符号表、路线图
+  index.md                  # 中文首页
+  releases.md               # 版本与更新日志
+  en/                       # 英文版（相同结构，路径 /en/）
   public/figures/           # 脚本生成的 SVG 插图
   public/audio/             # 脚本生成的对照音频（WAV）
 code/                       # 全书 Python 实验（仅标准库）
+TRANSLATION.md              # 英文版翻译规范与术语表
 AGENTS.md                   # 写作/维护手册（给未来的作者与 agent）
 PLAN.md                     # 全书内容规格
 PROGRESS.md                 # 进度看板

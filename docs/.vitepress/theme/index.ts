@@ -4,6 +4,7 @@ import CentsRuler from './components/CentsRuler.vue'
 import Box from './components/Box.vue'
 import Figure from './components/Figure.vue'
 import AudioDemo from './components/AudioDemo.vue'
+import EuclideanRhythmLab from './components/EuclideanRhythmLab.vue'
 import './custom.css'
 
 export default {
@@ -14,5 +15,6 @@ export default {
     app.component('Box', Box)
     app.component('Figure', Figure)
     app.component('AudioDemo', AudioDemo)
+    app.component('EuclideanRhythmLab', EuclideanRhythmLab)
   }
 }

@@ -14,7 +14,12 @@ make_figures.py —— 用纯标准库生成书中插图（SVG）
 from __future__ import annotations
 
 import math
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from common import dissonance, ratio_of_cents  # noqa: E402
 
 OUT = Path(__file__).resolve().parent.parent / "docs" / "public" / "figures"
 
@@ -344,6 +349,162 @@ def fig_major_scale() -> str:
     return svg(w, h, "".join(parts), "大调音阶的间距结构")
 
 
+def fig_roughness_curve() -> str:
+    """第 3 章：粗糙度随音程变化的静态曲线（交互组件的降级版）。"""
+    w, h = 740, 340
+    base = 330.0
+    samples = [(c, dissonance(base, base * ratio_of_cents(c))) for c in range(0, 1201, 2)]
+    vmax = max(d for _, d in samples) or 1.0
+    x0, y0, pw, ph = 64, 58, 610, 210
+
+    def px(c: float) -> float:
+        return x0 + pw * c / 1200.0
+
+    def py(d: float) -> float:
+        return y0 + ph - ph * d / vmax
+
+    parts = ['<text x="24" y="28" class="title">粗糙度曲线：谷底 = 协和音程（基频 330 Hz）</text>']
+    parts.append(f'<rect x="{x0}" y="{y0}" width="{pw}" height="{ph}" fill="#ffffff" stroke="{GRID}"/>')
+    for g in range(0, 5):
+        v = vmax * g / 4
+        y = py(v)
+        parts.append(f'<line x1="{x0}" y1="{y:.1f}" x2="{x0 + pw}" y2="{y:.1f}" stroke="{GRID}"/>')
+        parts.append(f'<text x="{x0 - 8}" y="{y + 3:.1f}" text-anchor="end" class="tick">D={v:.2f}</text>')
+    for c in range(0, 1201, 200):
+        x = px(c)
+        parts.append(f'<line x1="{x:.1f}" y1="{y0 + ph}" x2="{x:.1f}" y2="{y0 + ph + 6}" stroke="{MUTED}"/>')
+        parts.append(f'<text x="{x:.1f}" y="{y0 + ph + 18}" text-anchor="middle" class="tick">{c}</text>')
+    parts.append(f'<text x="{x0 + pw}" y="{y0 + ph + 36}" text-anchor="end" class="tick">音程（cent）</text>')
+
+    parts.append(
+        f'<path d="{path([(px(c), py(d)) for c, d in samples])}" '
+        f'fill="none" stroke="{TEAL}" stroke-width="2"/>'
+    )
+
+    labels = [(5 / 4, "5:4"), (4 / 3, "4:3"), (3 / 2, "3:2"), (5 / 3, "5:3"), (7 / 4, "7:4")]
+    for idx, (ratio, name) in enumerate(labels):
+        c = 1200 * math.log2(ratio)
+        d = dissonance(base, base * ratio)
+        x, y = px(c), py(d)
+        parts.append(f'<line x1="{x:.1f}" y1="{y0}" x2="{x:.1f}" y2="{y0 + ph}" stroke="{AMBER_SOFT}" stroke-dasharray="3 3"/>')
+        parts.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="3.6" fill="{AMBER}"/>')
+        dy = -12 if idx % 2 == 0 else 14
+        parts.append(f'<text x="{x:.1f}" y="{y + dy:.1f}" text-anchor="middle" class="tick mono">{name}</text>')
+
+    peak = max(samples, key=lambda p: p[1])
+    parts.append(f'<text x="{px(peak[0]):.1f}" y="{py(peak[1]) - 8:.1f}" text-anchor="middle" class="tick">最粗糙 ≈ {peak[0]:.0f} ¢</text>')
+    parts.append(f'<text x="24" y="{h - 16}" class="tick">曲线由 code/common.py 的同一个模型算出：谷底越深，谐波重合越多。</text>')
+    return svg(w, h, "".join(parts), "粗糙度随音程变化的曲线")
+
+
+def fig_harmonic_comb() -> str:
+    """第 3 章：两组谐波在频率轴上的重合情况。"""
+    w, h = 740, 300
+    cases = [(3 / 2, "3:2 纯五度"), (5 / 4, "5:4 大三度")]
+    f1 = 220.0
+    maxf = 2200.0
+    parts = ['<text x="24" y="28" class="title">谐波梳：重合的谱线越多，拍频越少</text>']
+    for idx, (ratio, name) in enumerate(cases):
+        x0, pw = 48 + idx * 360, 300
+        y1, y2 = 120, 176
+        parts.append(f'<text x="{x0}" y="58" class="title">{name}</text>')
+        parts.append(f'<line x1="{x0}" y1="{y2 + 24}" x2="{x0 + pw}" y2="{y2 + 24}" stroke="{SLATE}"/>')
+        for tone, yy, color, label in ((1, y1, TEAL, "f₁ 谐波"), (2, y2, AMBER, "f₂ 谐波")):
+            parts.append(f'<text x="{x0 - 4}" y="{yy + 4}" text-anchor="end" class="tick">{label}</text>')
+            for k in range(1, 7):
+                f = tone * f1 * (ratio if tone == 2 else 1) * k
+                if f > maxf:
+                    break
+                x = x0 + pw * f / maxf
+                parts.append(f'<line x1="{x:.1f}" y1="{yy}" x2="{x:.1f}" y2="{yy + 20}" stroke="{color}"/>')
+                parts.append(f'<circle cx="{x:.1f}" cy="{yy:.1f}" r="4" fill="{color}"/>')
+        # 找出前 8 次谐波内的重合
+        for i in range(1, 9):
+            for j in range(1, 9):
+                if abs(i * f1 - j * f1 * ratio) < 1e-6:
+                    f = i * f1
+                    if f <= maxf:
+                        x = x0 + pw * f / maxf
+                        parts.append(f'<line x1="{x:.1f}" y1="{y1}" x2="{x:.1f}" y2="{y2 + 20}" stroke="{TEAL_SOFT}" stroke-width="5" opacity="0.45"/>')
+        for f in (500, 1000, 1500, 2000):
+            x = x0 + pw * f / maxf
+            parts.append(f'<text x="{x:.1f}" y="{y2 + 42}" text-anchor="middle" class="tick">{f}</text>')
+        parts.append(f'<text x="{x0 + pw}" y="{y2 + 58}" text-anchor="end" class="tick">频率 (Hz)</text>')
+    parts.append(f'<text x="24" y="{h - 16}" class="tick">青色竖带 = 两列谐波精确重合的位置；重合处拍频为 0，但其余谱线仍可能贡献粗糙度。</text>')
+    return svg(w, h, "".join(parts), "谐波梳与重合位置")
+
+
+def fig_euclidean_timeline() -> str:
+    """第 7 章：欧几里得节奏与 3:4 叠加的时间线。"""
+    w, h = 760, 330
+    parts = ['<text x="24" y="28" class="title">时间线：重音如何被均匀地放进 n 个格子</text>']
+    rows = [(3, 8), (5, 8), (5, 13)]
+    left, top, cell, gap = 118, 62, 38, 54
+    for r, (k, n) in enumerate(rows):
+        y = top + r * gap
+        hits = {int(math.floor((j * n + k - 1) / k)) for j in range(k)}
+        parts.append(f'<text x="{left - 12}" y="{y + 23}" text-anchor="end" class="lbl mono">E({k},{n})</text>')
+        for i in range(n):
+            x = left + i * cell
+            fill = TEAL if i in hits else "#ffffff"
+            parts.append(f'<rect x="{x}" y="{y}" width="{cell - 3}" height="{cell - 6}" rx="4" fill="{fill}" stroke="{GRID}"/>')
+        pattern = "".join("x" if i in hits else "." for i in range(n))
+        parts.append(f'<text x="{left + n * cell + 9}" y="{y + 23}" class="tick mono">{pattern}</text>')
+
+    # 3:4 叠加
+    y = top + 3 * gap + 14
+    parts.append(f'<text x="{left - 12}" y="{y + 23}" text-anchor="end" class="lbl">3:4 叠加</text>')
+    for i in range(12):
+        x = left + i * cell
+        parts.append(f'<rect x="{x}" y="{y}" width="{cell - 3}" height="{cell - 6}" rx="4" fill="#ffffff" stroke="{GRID}"/>')
+    for i in range(0, 12, 4):
+        x = left + i * cell + (cell - 3) / 2
+        parts.append(f'<circle cx="{x:.1f}" cy="{y + 9}" r="6" fill="{TEAL}"/>')
+    for i in range(0, 12, 3):
+        x = left + i * cell + (cell - 3) / 2
+        parts.append(f'<circle cx="{x:.1f}" cy="{y + 26}" r="5" fill="{AMBER}"/>')
+    parts.append(f'<text x="24" y="{h - 16}" class="tick">实心 = 起音。3:4 两条周期在 12 步后再次对齐；重合点给出「循环感」的锚点。</text>')
+    return svg(w, h, "".join(parts), "欧几里得节奏时间线")
+
+
+def fig_transition_heatmap() -> str:
+    """第 8 章：一阶转移概率矩阵热图。"""
+    import ch08_melody as m8
+
+    counts = m8.count_matrix(m8.SEQ)
+    probs = m8.row_probs(counts)
+    names = m8.NOTE
+    w, h = 620, 500
+    left, top, cw, chh = 92, 66, 60, 46
+    vmax = max(max(row) for row in probs) or 1.0
+
+    def mix(v: float) -> str:
+        t = v / vmax
+        # 白 -> 青 -> 深青
+        r = int(247 - 230 * t)
+        g = int(250 - 130 * t)
+        b = int(252 - 170 * t)
+        return f"#{r:02x}{g:02x}{b:02x}"
+
+    parts = ['<text x="24" y="28" class="title">一阶转移概率 P(xₜ → xₜ₊₁)：空格子就是「语料里没出现」</text>']
+    for j, name in enumerate(names):
+        x = left + j * cw + cw / 2
+        parts.append(f'<text x="{x:.1f}" y="{top - 10}" text-anchor="middle" class="lbl mono">{name}</text>')
+    for i, name in enumerate(names):
+        y = top + i * chh
+        parts.append(f'<text x="{left - 10}" y="{y + 28}" text-anchor="end" class="lbl mono">{name}</text>')
+        for j in range(7):
+            p = probs[i][j]
+            x = left + j * cw
+            parts.append(f'<rect x="{x}" y="{y}" width="{cw - 3}" height="{chh - 3}" fill="{mix(p)}" stroke="#ffffff"/>')
+            color = "#ffffff" if p / vmax > 0.55 else SLATE
+            if p > 0:
+                parts.append(f'<text x="{x + cw / 2 - 1:.1f}" y="{y + 28}" text-anchor="middle" class="tick mono" fill="{color}">{p:.2f}</text>')
+    parts.append(f'<text x="{left}" y="{top + 7 * chh + 24}" class="tick">行 = 当前音级，列 = 下一音级；每行概率和为 1。</text>')
+    parts.append(f'<text x="24" y="{h - 16}" class="tick">颜色越深概率越大。训练语料只有 48 个音，因此很多格子为空 —— 这正是第 8 章讨论的稀疏性。</text>')
+    return svg(w, h, "".join(parts), "马尔可夫转移概率热图")
+
+
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     figs = {
@@ -354,6 +515,10 @@ def main() -> None:
         "euclidean.svg": fig_euclidean,
         "circle-of-fifths.svg": fig_circle_of_fifths,
         "major-scale.svg": fig_major_scale,
+        "roughness-curve.svg": fig_roughness_curve,
+        "harmonic-comb.svg": fig_harmonic_comb,
+        "euclidean-timeline.svg": fig_euclidean_timeline,
+        "transition-heatmap.svg": fig_transition_heatmap,
     }
     print(f"输出目录：{OUT}")
     for name, fn in figs.items():
